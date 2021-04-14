@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.6
+# Exercise 2.7
 
 import sys
 import csv
@@ -23,11 +23,11 @@ def read_portfolio(fn):
     return portfolio
 
 
-def read_prices(pfn):
+def read_prices(pr_fn):
     """read and prices as dictionary"""
     prices = {}
-    with open(pfn, 'rt') as pf:
-        rows = csv.reader(pf)
+    with open(pr_fn, 'rt') as pr_f:
+        rows = csv.reader(pr_f)
         headers = next(rows)
         for row in rows:
             if len(headers) == len(row):
@@ -42,3 +42,15 @@ else:
 
 pf = read_portfolio('Data/portfolio.csv')
 print(pf)
+price_dict = read_prices('Data/prices.csv')
+
+for position in pf:
+    pf_value = position['shares'] * position["price"]
+    if position["name"] in price_dict.keys():
+        new_value = position['shares'] * price_dict[position["name"]]
+        if pf_value < new_value:
+            print(f"positive returns for {position['name']} with {position['shares']} shares is {new_value - pf_value:.2f}")
+        elif pf_value > new_value:
+            print(f"negative returns for {position['name']} with {position['shares']} shares is {pf_value - new_value:.2f}")
+        else:
+            print(f"no change in returns for  {position['name']} with {position['shares']} shares")
