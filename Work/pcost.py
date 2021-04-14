@@ -7,8 +7,9 @@ import sys
 
 
 def portfolio_cost(fn):
+    """Computes the total cost (shares*price) of a portfolio file"""
     costs: float = 0
-    with open(fn) as f:
+    with open(fn, 'rt') as f:
         rows = csv.reader(f)
         headers = next(rows)
         for row in rows:
