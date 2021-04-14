@@ -1,12 +1,14 @@
 # pcost.py
 #
-# Exercise 1.32
+# Exercise 1.33
 
 import csv
+import sys
 
-def portfolio_cost(filename):
+
+def portfolio_cost(fn):
     costs: float = 0
-    with open(filename) as f:
+    with open(fn) as f:
         rows = csv.reader(f)
         headers = next(rows)
         for row in rows:
@@ -17,7 +19,12 @@ def portfolio_cost(filename):
     return costs
 
 
-cost = portfolio_cost('Data/portfolio.csv')
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = 'Data/portfolio.csv'
+
+cost = portfolio_cost(filename)
+
+cost = portfolio_cost(filename)
 print('Total cost:', cost)
-
-
