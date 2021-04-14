@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.5
+# Exercise 2.6
 
 import sys
 import csv
@@ -21,6 +21,18 @@ def read_portfolio(fn):
                 }
                 portfolio.append(holding)
     return portfolio
+
+
+def read_prices(pfn):
+    """read and prices as dictionary"""
+    prices = {}
+    with open(pfn, 'rt') as pf:
+        rows = csv.reader(pf)
+        headers = next(rows)
+        for row in rows:
+            if len(headers) == len(row):
+                prices[row[0]] = float(row[1])
+    return prices
 
 
 if len(sys.argv) == 2:
