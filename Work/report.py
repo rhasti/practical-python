@@ -62,7 +62,7 @@ headers = ('Name', 'Shares', 'Price', 'Change')
 
 report = make_report(pf, price_dict)
 
-print("%10s %>10s %>10s %>10s" % headers)
+print("%10s %10s %10s %10s" % headers)
 separator = '-' * 10
 print(separator, separator, separator, separator)
 
