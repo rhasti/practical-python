@@ -35,22 +35,38 @@ def read_prices(pr_fn):
     return prices
 
 
+def make_report(portfolio: list, prices: dict):
+    """
+    return list of tuples with stock name, shares, cost and price
+    :param portfolio:
+    :param prices:
+    :return:
+
+    """
+    rp = []
+    for stock in portfolio:
+        if stock['name'] in prices.keys():
+            rp.append((stock['name'], stock['shares'], stock['price'], prices[stock['name']] - stock['price'] ))
+    return sorted(rp)
+
+
 if len(sys.argv) == 2:
     filename = sys.argv[1]
 else:
     filename = 'Data/portfolio.csv'
 
 pf = read_portfolio('Data/portfolio.csv')
-print(pf)
 price_dict = read_prices('Data/prices.csv')
 
-for position in pf:
-    pf_value = position['shares'] * position["price"]
-    if position["name"] in price_dict.keys():
-        new_value = position['shares'] * price_dict[position["name"]]
-        if pf_value < new_value:
-            print(f"positive returns for {position['name']} with {position['shares']} shares is {new_value - pf_value:.2f}")
-        elif pf_value > new_value:
-            print(f"negative returns for {position['name']} with {position['shares']} shares is {pf_value - new_value:.2f}")
-        else:
-            print(f"no change in returns for  {position['name']} with {position['shares']} shares")
+headers = ('Name', 'Shares', 'Price', 'Change')
+
+report = make_report(pf, price_dict)
+
+print("%10s %>10s %>10s %>10s" % headers)
+separator = '-' * 10
+print(separator, separator, separator, separator)
+
+for name, shares, price, change in report:
+    print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+
+
