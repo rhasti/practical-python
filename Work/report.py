@@ -28,10 +28,11 @@ def read_prices(pr_fn):
     prices = {}
     with open(pr_fn, 'rt') as pr_f:
         rows = csv.reader(pr_f)
-        headers = next(rows)
         for row in rows:
-            if len(headers) == len(row):
+            try:
                 prices[row[0]] = float(row[1])
+            except IndexError:
+                pass
     return prices
 
 
@@ -46,8 +47,8 @@ def make_report(portfolio: list, prices: dict):
     rp = []
     for stock in portfolio:
         if stock['name'] in prices.keys():
-            rp.append((stock['name'], stock['shares'], stock['price'], prices[stock['name']] - stock['price'] ))
-    return sorted(rp)
+            rp.append((stock['name'], stock['shares'], prices[stock['name']], prices[stock['name']] - stock['price'] ))
+    return rp
 
 
 if len(sys.argv) == 2:
@@ -65,8 +66,9 @@ report = make_report(pf, price_dict)
 print("%10s %10s %10s %10s" % headers)
 separator = '-' * 10
 print(separator, separator, separator, separator)
-
+dollar = '$'
 for name, shares, price, change in report:
-    print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+    dp = f"{dollar}{price:.2f}"
+    print(f'{name:>10s} {shares:>10d} {dp:>10s} {change:>10.2f}')
 
 
