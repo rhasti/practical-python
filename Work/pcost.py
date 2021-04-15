@@ -11,12 +11,12 @@ def portfolio_cost(fn):
     costs: float = 0
     with open(fn, 'rt') as f:
         rows = csv.reader(f)
-        headers = next(rows)
-        for row in rows:
+        headers=next(rows)
+        for rowno, row in enumerate(rows, start=1):
             try:
                 costs += int(row[1]) * float(row[2])
             except ValueError:
-                pass
+                print(f'Row {rowno}: Bad row: {row}')
     return costs
 
 
