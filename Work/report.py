@@ -3,7 +3,6 @@
 # Exercise 2.7
 
 import sys
-import csv
 import fileparse
 
 
