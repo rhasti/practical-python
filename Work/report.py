@@ -4,35 +4,21 @@
 
 import sys
 import csv
+import fileparse
 
 
 def read_portfolio(fn):
     """read portfolio file into portfolio data structure"""
-    portfolio = []
-    with open(fn, "rt") as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        for row in rows:
-            if len(headers) == len(row):
-                holding = {
-                    "name": row[0],
-                    "shares": int(row[1]),
-                    "price": float(row[2]),
-                }
-                portfolio.append(holding)
-    return portfolio
+    records = fileparse.parse_csv(fn, types=[str, int, float])
+    return records
 
 
 def read_prices(pr_fn):
     """read and prices as dictionary"""
-    prices: dict = {}
-    with open(pr_fn, "rt") as pr_f:
-        rows = csv.reader(pr_f)
-        for row in rows:
-            try:
-                prices[row[0]] = float(row[1])
-            except IndexError:
-                pass
+    prices_list = fileparse.parse_csv(pr_fn, types=[str, float], has_headers=False)
+    prices = {}
+    for item in prices_list:
+        prices[item[0]] = item[1]
     return prices
 
 
