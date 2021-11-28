@@ -3,6 +3,7 @@
 # Exercise 2.7
 
 import fileparse
+import tableformat
 from stock import Stock
 
 
@@ -47,18 +48,14 @@ def make_report(portfolio: list, prices: dict) -> list:
     return rp
 
 
-def print_report(report: list) -> None:
+def print_report(report: list, formatter) -> None:
     """
     Print formated investment report
     """
-    headers = ("Name", "Shares", "Price", "Change")
-    print("%10s %10s %10s %10s" % headers)
-    separator = "-" * 10
-    print((separator + " ") * len(headers))
-    dollar = "$"
+    formatter.headings(["Name", "Shares", "Price", "Change"])
     for name, shares, price, change in report:
-        dp = f"{dollar}{price:.2f}"
-        print(f"{name:>10s} {shares:>10d} {dp:>10s} {change:>10.2f}")
+        rowdata = [name, str(shares), f"{price:0.2f}", f"{change:0.2f}"]
+        formatter.row(rowdata)
 
 
 def portfolio_report(portfolio: str, prices: str) -> None:
@@ -70,7 +67,8 @@ def portfolio_report(portfolio: str, prices: str) -> None:
     with open(prices, "rt") as f:
         price_dict = read_prices(f)
     report = make_report(pf, price_dict)
-    print_report(report)
+    formatter = tableformat.HTMLTableFormatter()
+    print_report(report, formatter)
 
 
 def main(argv):
