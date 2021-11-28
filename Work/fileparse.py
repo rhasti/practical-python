@@ -10,6 +10,7 @@ def parse_csv(
     types: list = None,
     has_headers: bool = True,
     delimiter=",",
+    silence_errors=False,
 ) -> list:
     """
     Parse a CSV file into a list of records
@@ -40,8 +41,9 @@ def parse_csv(
                     try:
                         row = [func(val) for func, val in zip(types, row)]
                     except ValueError as e:
-                        print(f"Row {idx}: Couldn't convert {row}")
-                        print(f"Row {idx}: Reason {e}")
+                        if not silence_errors:
+                            print(f"Row {idx}: Couldn't convert {row}")
+                            print(f"Row {idx}: Reason {e}")
 
                 # Make a dictionary
                 record = dict(zip(headers, row))
@@ -57,8 +59,9 @@ def parse_csv(
                     try:
                         row = tuple([func(val) for func, val in zip(types, row)])  # type: ignore
                     except ValueError as e:
-                        print(f"Row {idx}: Couldn't convert {row}")
-                        print(f"Row {idx}: Reason {e}")
+                        if not silence_errors:
+                            print(f"Row {idx}: Couldn't convert {row}")
+                            print(f"Row {idx}: Reason {e}")
 
                     records.append(row)  # type: ignore
 
