@@ -28,7 +28,8 @@ def parse_csv(
                 headers = select
             else:
                 indices = []
-            for row in rows:
+            for idx, row in enumerate(rows):
+                idx += 1
                 if not row:  # Skip rows with no data
                     continue
                 # Filter the row if specific columns were selected
@@ -36,7 +37,11 @@ def parse_csv(
                     row = [row[index] for index in indices]
 
                 if types:
-                    row = [func(val) for func, val in zip(types, row)]
+                    try:
+                        row = [func(val) for func, val in zip(types, row)]
+                    except ValueError as e:
+                        print(f"Row {idx}: Couldn't convert {row}")
+                        print(f"Row {idx}: Reason {e}")
 
                 # Make a dictionary
                 record = dict(zip(headers, row))
@@ -45,10 +50,16 @@ def parse_csv(
             if select:
                 raise RuntimeError("select argument requires column headers")
             if types:
-                for row in rows:
+                for idx, row in enumerate(rows):
+                    idx += 1
                     if not row:
                         continue
-                    row = tuple([func(val) for func, val in zip(types, row)])  # type: ignore
+                    try:
+                        row = tuple([func(val) for func, val in zip(types, row)])  # type: ignore
+                    except ValueError as e:
+                        print(f"Row {idx}: Couldn't convert {row}")
+                        print(f"Row {idx}: Reason {e}")
+
                     records.append(row)  # type: ignore
 
     return records
