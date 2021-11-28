@@ -3,12 +3,17 @@
 # Exercise 2.7
 
 import fileparse
+from stock import Stock
 
 
 def read_portfolio(fn):
     """read portfolio file into portfolio data structure"""
     records = fileparse.parse_csv(fn, types=[str, int, float])
-    return records
+    stock_list = []
+    for record in records:
+        stock = Stock(record["name"], record["shares"], record["price"])
+        stock_list.append(stock)
+    return stock_list
 
 
 def read_prices(pr_fn):
@@ -30,13 +35,13 @@ def make_report(portfolio: list, prices: dict) -> list:
     """
     rp = []
     for stock in portfolio:
-        if stock["name"] in prices.keys():
+        if stock.name in prices.keys():
             rp.append(
                 (
-                    stock["name"],
-                    stock["shares"],
-                    prices[stock["name"]],
-                    prices[stock["name"]] - stock["price"],
+                    stock.name,
+                    stock.shares,
+                    prices[stock.name],
+                    prices[stock.name] - stock.price,
                 )
             )
     return rp
@@ -60,8 +65,10 @@ def portfolio_report(portfolio: str, prices: str) -> None:
     """
     Top level function for report print. Ingesting portfolio and prices.
     """
-    pf = read_portfolio(portfolio)
-    price_dict = read_prices(prices)
+    with open(portfolio, "rt") as f:
+        pf = read_portfolio(f)
+    with open(prices, "rt") as f:
+        price_dict = read_prices(f)
     report = make_report(pf, price_dict)
     print_report(report)
 
@@ -75,9 +82,7 @@ def main(argv):
         prices_file = "Data/prices.csv"
 
     print(f"{portfolio_file:-^43s}")
-    with open(portfolio_file, "rt") as port_file:
-        with open(prices_file, "rt") as price_file:
-            portfolio_report(port_file, price_file)
+    portfolio_report(portfolio_file, prices_file)
     print()
 
 
