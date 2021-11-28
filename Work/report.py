@@ -75,7 +75,9 @@ def main(argv):
         prices_file = "Data/prices.csv"
 
     print(f"{portfolio_file:-^43s}")
-    portfolio_report(portfolio_file, prices_file)
+    with open(portfolio_file, "rt") as port_file:
+        with open(prices_file, "rt") as price_file:
+            portfolio_report(port_file, price_file)
     print()
 
 

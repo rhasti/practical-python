@@ -25,7 +25,8 @@ def main(argv):
     else:
         filename = "Data/portfolio.csv"
 
-    cost = portfolio_cost(filename)
+    with open(filename, "rt") as f:
+        cost = portfolio_cost(f)
 
     print("Total cost:", cost)
 
