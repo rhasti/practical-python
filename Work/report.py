@@ -9,7 +9,8 @@ from stock import Stock
 
 def read_portfolio(fn):
     """read portfolio file into portfolio data structure"""
-    records = fileparse.parse_csv(fn, types=[str, int, float])
+    with open(fn, "rt") as f:
+        records = fileparse.parse_csv(f, types=[str, int, float])
     stock_list = []
     for record in records:
         stock = Stock(record["name"], record["shares"], record["price"])
@@ -19,7 +20,8 @@ def read_portfolio(fn):
 
 def read_prices(pr_fn):
     """read and prices as dictionary"""
-    prices_list = fileparse.parse_csv(pr_fn, types=[str, float], has_headers=False)
+    with open(pr_fn, "rt") as f:
+        prices_list = fileparse.parse_csv(f, types=[str, float], has_headers=False)
     prices = {}
     for item in prices_list:
         prices[item[0]] = item[1]
@@ -62,10 +64,8 @@ def portfolio_report(portfolio: str, prices: str, fmt: str = "txt") -> None:
     """
     Top level function for report print. Ingesting portfolio and prices.
     """
-    with open(portfolio, "rt") as f:
-        pf = read_portfolio(f)
-    with open(prices, "rt") as f:
-        price_dict = read_prices(f)
+    pf = read_portfolio(portfolio)
+    price_dict = read_prices(prices)
     report = make_report(pf, price_dict)
     # Print it out
 
@@ -81,6 +81,7 @@ def main(argv):
     else:
         portfolio_file = "Data/portfolio.csv"
         prices_file = "Data/prices.csv"
+        fmt = "txt"
 
     print(f"{portfolio_file:-^43s}")
     portfolio_report(portfolio_file, prices_file, fmt)

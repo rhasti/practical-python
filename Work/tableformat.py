@@ -2,18 +2,6 @@
 from abc import ABC, abstractmethod
 
 
-def create_formatter(fmt):
-    if fmt == "txt":
-        formatter = TextTableFormatter()
-    elif fmt == "csv":
-        formatter = CSVTableFormatter()
-    elif fmt == "html":
-        formatter = HTMLTableFormatter()
-    else:
-        raise RuntimeError(f"Unknown format {fmt}")
-    return formatter
-
-
 class TableFormatter(ABC):
     @abstractmethod
     def headings(self, headers):
@@ -75,3 +63,26 @@ class HTMLTableFormatter(TableFormatter):
         for el in rowdata:
             print(f"<th>{el}</th>", end="")
         print("</tr>")
+
+
+def create_formatter(fmt):
+    if fmt == "txt":
+        formatter = TextTableFormatter()
+    elif fmt == "csv":
+        formatter = CSVTableFormatter()
+    elif fmt == "html":
+        formatter = HTMLTableFormatter()
+    else:
+        raise RuntimeError(f"Unknown format {fmt}")
+    return formatter
+
+
+def print_table(report: list, cols: list, formatter: TableFormatter):
+    formatter.headings(cols)
+    # next(report)
+    for row in report:
+        rowdata = [str(getattr(row, col)) for col in cols]
+        formatter.row(rowdata)
+
+
+
