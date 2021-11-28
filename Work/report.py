@@ -58,7 +58,7 @@ def print_report(report: list, formatter) -> None:
         formatter.row(rowdata)
 
 
-def portfolio_report(portfolio: str, prices: str) -> None:
+def portfolio_report(portfolio: str, prices: str, fmt: str = "txt") -> None:
     """
     Top level function for report print. Ingesting portfolio and prices.
     """
@@ -67,7 +67,9 @@ def portfolio_report(portfolio: str, prices: str) -> None:
     with open(prices, "rt") as f:
         price_dict = read_prices(f)
     report = make_report(pf, price_dict)
-    formatter = tableformat.HTMLTableFormatter()
+    # Print it out
+
+    formatter = tableformat.create_formatter(fmt)
     print_report(report, formatter)
 
 
@@ -75,12 +77,13 @@ def main(argv):
     if len(argv) >= 2:
         portfolio_file = argv[1]
         prices_file = argv[2]
+        fmt = argv[3]
     else:
         portfolio_file = "Data/portfolio.csv"
         prices_file = "Data/prices.csv"
 
     print(f"{portfolio_file:-^43s}")
-    portfolio_report(portfolio_file, prices_file)
+    portfolio_report(portfolio_file, prices_file, fmt)
     print()
 
 
