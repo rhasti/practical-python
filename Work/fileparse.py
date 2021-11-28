@@ -42,6 +42,8 @@ def parse_csv(
                 record = dict(zip(headers, row))
                 records.append(record)
         else:
+            if select:
+                raise RuntimeError("select argument requires column headers")
             if types:
                 for row in rows:
                     if not row:
