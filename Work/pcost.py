@@ -27,7 +27,6 @@ def main(argv):
 
     cost = portfolio_cost(filename)
 
-    cost = portfolio_cost(filename)
     print("Total cost:", cost)
 
 

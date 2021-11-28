@@ -67,16 +67,16 @@ def portfolio_report(portfolio: str, prices: str) -> None:
 
 
 def main(argv):
-    if len(argv) == 2:
-        filename = argv[1]
+    if len(argv) >= 2:
+        portfolio_file = argv[1]
+        prices_file = argv[2]
     else:
-        filename = "Data/portfolio.csv"
+        portfolio_file = "Data/portfolio.csv"
+        prices_file = "Data/prices.csv"
 
-    files = ["Data/portfolio.csv", "Data/portfolio2.csv"]
-    for name in files:
-        print(f"{name:-^43s}")
-        portfolio_report(name, "Data/prices.csv")
-        print()
+    print(f"{portfolio_file:-^43s}")
+    portfolio_report(portfolio_file, prices_file)
+    print()
 
 
 if __name__ == "__main__":
