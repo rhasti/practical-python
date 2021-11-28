@@ -5,17 +5,18 @@
 import fileparse
 import tableformat
 from stock import Stock
+from portfolio import Portfolio
 
 
-def read_portfolio(fn):
+def read_portfolio(fn) -> Portfolio:
     """read portfolio file into portfolio data structure"""
     with open(fn, "rt") as f:
         records = fileparse.parse_csv(f, types=[str, int, float])
-    stock_list = []
-    for record in records:
-        stock = Stock(record["name"], record["shares"], record["price"])
-        stock_list.append(stock)
-    return stock_list
+
+    portfolio = [
+        Stock(record["name"], record["shares"], record["price"]) for record in records
+    ]
+    return Portfolio(portfolio)
 
 
 def read_prices(pr_fn):
