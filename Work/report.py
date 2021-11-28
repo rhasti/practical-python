@@ -2,7 +2,6 @@
 #
 # Exercise 2.7
 
-import sys
 import fileparse
 
 
@@ -67,9 +66,9 @@ def portfolio_report(portfolio: str, prices: str) -> None:
     print_report(report)
 
 
-if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        filename = sys.argv[1]
+def main(argv):
+    if len(argv) == 2:
+        filename = argv[1]
     else:
         filename = "Data/portfolio.csv"
 
@@ -78,3 +77,9 @@ if __name__ == "__main__":
         print(f"{name:-^43s}")
         portfolio_report(name, "Data/prices.csv")
         print()
+
+
+if __name__ == "__main__":
+    import sys
+
+    main(sys.argv)
