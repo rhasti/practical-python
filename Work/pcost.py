@@ -8,16 +8,13 @@ import report
 def portfolio_cost(fn):
     """Computes the total cost (shares*price) of a portfolio file"""
     costs: float = 0
-    with open(fn, "rt") as f:
-        records = report.read_portfolio(f)
-        for idx, record in enumerate(records):
-            try:
-                nshares = int(record.shares)
-                price = float(record.price)
-                costs += nshares * price
-            except ValueError:
-                print(f"Row {idx +1}: Bad row: {record}")
-        return costs
+    records = report.read_portfolio(fn)
+    for idx, record in enumerate(records):
+        try:
+            costs += record.cost
+        except ValueError:
+            print(f"Row {idx +1}: Bad row: {record}")
+    return costs
 
 
 def main(argv):
