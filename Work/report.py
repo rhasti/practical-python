@@ -13,9 +13,7 @@ def read_portfolio(fn) -> Portfolio:
     with open(fn, "rt") as f:
         records = fileparse.parse_csv(f, types=[str, int, float])
 
-    portfolio = [
-        Stock(record["name"], record["shares"], record["price"]) for record in records
-    ]
+    portfolio = [Stock(**record) for record in records]
     return Portfolio(portfolio)
 
 

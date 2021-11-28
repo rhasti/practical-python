@@ -16,6 +16,7 @@ def convert_types(rows, types):
 
 
 def make_dicts(rows, headers):
+    # (dict(zip(headers, row)) for row in rows)
     for row in rows:
         yield dict(zip(headers, row))
 
@@ -39,7 +40,8 @@ def ticker(portfolio, stock_log, fmt="txt"):
     formatter.headings(["Name", "Price", "Change"])
     pf = report.read_portfolio(portfolio)
     rows = parse_stock_data(follow(stock_log))
-    rows = filter_symbols(rows, pf)
+    # rows = filter_symbols(rows, pf)
+    rows = (row for row in rows if row["name"] in pf)
     for row in rows:
         row = [row["name"], str(row["price"]), str(row["change"])]
         formatter.row(row)
