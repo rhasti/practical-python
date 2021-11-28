@@ -29,7 +29,7 @@ def read_prices(pr_fn):
     return prices
 
 
-def make_report(portfolio: list, prices: dict) -> list:
+def make_report(portfolio: Portfolio, prices: dict) -> list:
     """
     return list of tuples with stock name, shares, cost and price
     :param portfolio:
