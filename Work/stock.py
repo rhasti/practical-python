@@ -1,10 +1,12 @@
-from sys import settrace
+from typedproperty import typedproperty
 
 
 class Stock:
-    __slots__ = ("name", "_shares", "price")
+    name = typedproperty("name", str)
+    shares = typedproperty("shares", int)
+    price = typedproperty("price", float)
 
-    def __init__(self, name: str, shares: int, price: float) -> None:
+    def __init__(self, name, shares, price) -> None:
         self.name = name
         self._shares = shares
         self.price = price
@@ -16,15 +18,13 @@ class Stock:
     def cost(self):
         return self.shares * self.price
 
-    @property
-    def shares(self):
-        return self._shares
+    # @property
+    # def shares(self):
+    #     return self._shares
 
-    @shares.setter
-    def shares(self, shares):
-        if not isinstance(shares, int):
-            raise TypeError("expected an integer")
-        self._shares = shares
+    # @shares.setter
+    # def shares(self, shares):
+    #     self._shares = shares
 
     def sell(self, amount):
         if amount <= self.shares:
