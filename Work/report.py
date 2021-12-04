@@ -11,10 +11,8 @@ from portfolio import Portfolio
 def read_portfolio(fn, **kwargs) -> Portfolio:
     """read portfolio file into portfolio data structure"""
     with open(fn, "rt") as f:
-        records = fileparse.parse_csv(f, types=[str, int, float], **kwargs)
-
-    portfolio = [Stock(**record) for record in records]
-    return Portfolio(portfolio)
+        portfolio = Portfolio.from_csv(f)
+    return portfolio
 
 
 def read_prices(pr_fn):
