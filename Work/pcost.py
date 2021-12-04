@@ -1,29 +1,6 @@
+#!/usr/bin/env python3
 # pcost.py
-#
-# Exercise 1.33
+import porty.pcost
+import sys
 
-from portfolio import Portfolio
-import report
-
-
-def portfolio_cost(fn):
-    """Computes the total cost (shares*price) of a portfolio file"""
-    portfolio = report.read_portfolio(fn)
-    return portfolio.total_cost
-
-
-def main(argv):
-    if len(argv) == 2:
-        filename = argv[1]
-    else:
-        filename = "Data/portfolio.csv"
-
-    cost = portfolio_cost(filename)
-
-    print("Total cost:", cost)
-
-
-if __name__ == "__main__":
-    import sys
-
-    main(sys.argv)
+porty.pcost.main(sys.argv)

@@ -3,6 +3,9 @@
 # Exercise 3.3
 # from typing import Iterable
 import csv
+import logging
+
+log = logging.getLogger(__name__)
 
 
 def parse_csv(
@@ -39,8 +42,10 @@ def parse_csv(
                     row = [func(val) for func, val in zip(types, row)]
                 except ValueError as e:
                     if not silence_errors:
-                        print(f"Row {idx}: Couldn't convert {row}")
-                        print(f"Row {idx}: Reason {e}")
+                        # print(f"Row {idx}: Couldn't convert {row}")
+                        # print(f"Row {idx}: Reason {e}")
+                        log.warning("Row %d: Couldn't convert %s", idx, row)
+                        log.debug("Row %d: Reason %s", idx, e)
             # Make a dictionary
             record = dict(zip(headers, row))
             records.append(record)
@@ -56,8 +61,10 @@ def parse_csv(
                     row = tuple([func(val) for func, val in zip(types, row)])  # type: ignore
                 except ValueError as e:
                     if not silence_errors:
-                        print(f"Row {idx}: Couldn't convert {row}")
-                        print(f"Row {idx}: Reason {e}")
+                        # print(f"Row {idx}: Couldn't convert {row}")
+                        # print(f"Row {idx}: Reason {e}")
+                        log.warning("Row %d: Couldn't convert %s", idx, row)
+                        log.debug("Row %d: Reason %s", idx, e)
                 records.append(row)  # type: ignore
 
     return records
