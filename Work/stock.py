@@ -8,7 +8,7 @@ class Stock:
 
     def __init__(self, name, shares, price) -> None:
         self.name = name
-        self._shares = shares
+        self.shares = shares
         self.price = price
 
     def __repr__(self) -> str:
@@ -17,14 +17,6 @@ class Stock:
     @property
     def cost(self):
         return self.shares * self.price
-
-    # @property
-    # def shares(self):
-    #     return self._shares
-
-    # @shares.setter
-    # def shares(self, shares):
-    #     self._shares = shares
 
     def sell(self, amount):
         if amount <= self.shares:
